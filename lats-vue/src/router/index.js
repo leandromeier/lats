@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainPage from '../views/MainPage.vue'
-import CurrentGame from '../views/CurrentGame.vue'
+import MainPage from '../components/MainPage.vue'
+import CurrentGame from '../components/CurrentGame.vue'
 
 const routes = [
     { path: '/', name: 'main', component: MainPage },
