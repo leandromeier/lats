@@ -19,11 +19,9 @@ export default class Game {
                 }
             }
         }
+        // the board starts with two lines between stars
         this.stateGraph.addEdge(this.fromTupleToId(0, 0), this.fromTupleToId(0, 1))
         this.stateGraph.addEdge(this.fromTupleToId(1, 1), this.fromTupleToId(1, 2))
-        let edge0 = this.stateGraph.edges()[0]
-        console.log("graph edge 0 end: " + this.stateGraph.target(edge0))
-        console.log("graph edge 0 end deconstructed: " + this.fromIdToTuple(this.stateGraph.target(edge0))[0] + " and " + this.fromIdToTuple(this.stateGraph.target(edge0))[1])
     }
 
     handleCellClick(rowIndex, colIndex) {
