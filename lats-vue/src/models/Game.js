@@ -16,6 +16,7 @@ export default class Game {
         // set up the board(s)
         this.boards.forEach(board => {
             board.setUpBoard()
+            board.setUpGraph(["(0:0);(0:1)", "(4:2);(3:1)"])
         })
         this.cards.forEach(card => {
             card.setUpCard()
@@ -44,6 +45,11 @@ export default class Game {
     progressingDawn() {
         // makes the boards "smaller" 
     }
+
+    currentCard() {
+        return this.cards[0]
+    }
+
 
 
 }

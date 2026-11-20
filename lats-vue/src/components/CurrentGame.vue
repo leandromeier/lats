@@ -11,6 +11,9 @@ const playerBoard = boards[0] // default, but needs to be adapted in time
 const numberOfCols = boards[0].tiles[0].length
 const numberOfRows = boards[0].tiles.length
 const celestialBodies = ref(boards[0].tiles)
+const boardHeaderWidth = numberOfCols
+const boardHeaderHeight = 0.4 * numberOfRows
+const currentCard = computed(() => game.currentCard())
 
 
 function cellPosition(row, col) {
@@ -20,13 +23,7 @@ function cellPosition(row, col) {
   }
 }
 
-function handleCellClick(rowIndex, colIndex, cellType) {  
-    if(cellType === 'planet'){
-        alert('You cannot connect a planet')
-        return
-    }
-    else playerBoard.handleCellClick(rowIndex, colIndex)
-  }
+console.log("current card" + game.currentCard().tiles.length )
 
 </script>
 
@@ -39,13 +36,49 @@ function handleCellClick(rowIndex, colIndex, cellType) {
       and click a neighboring star to draw a line. Click a selected star to deselect it. 
       You may skip a card, but you must draw both lines or neither.</p>
   </div>
+
+    <!-- todo: 
+    - style the hedaer background differently
+    - make the card color darker
+    - make the card's stars appear in the right places -->
+    <div class="board"
+      :style="{ aspectRatio: `${boardHeaderWidth} / ${boardHeaderHeight}` }"
+    >
+    <svg class="current-card" :viewBox="`0 0 ${boardHeaderWidth} ${boardHeaderHeight}`"
+      preserveAspectRatio="none" aria-hidden="true">
+    <rect
+        :x="0.1 * boardHeaderHeight"
+        :y="0.1 * boardHeaderHeight"
+        :width="0.8 * boardHeaderHeight"
+        :height="0.8 * boardHeaderHeight"
+        fill="lightblue"
+    />  
+      <line
+        v-for="(edge, index) in currentCard.stateGraph.edges()"
+        :key="index"
+        :x1="currentCard.edgeToLine(edge).x1 + 0.5"
+        :y1="currentCard.edgeToLine(edge).y1 + 0.5"
+        :x2="currentCard.edgeToLine(edge).x2 + 0.5"
+        :y2="currentCard.edgeToLine(edge).y2 + 0.5"
+        stroke="white"
+        stroke-width="0.04"
+      /> 
+      <circle v-for="(cell, index) in currentCard.tiles.flat()"
+        :key="`${index}`"
+        :cx="(cell.col + 0.5)"
+        :cy="(cell.row + 0.5)"
+        :r="0.01 * boardHeaderHeight"
+        fill="white"
+      />
+    </svg>
+    </div>
   <div
     class="board"
     :style="{ aspectRatio: `${numberOfCols} / ${numberOfRows}` }"
   >
     <svg
-      class="board-art"
-      :viewBox="`0 0 ${numberOfCols} ${numberOfRows}`"
+      class="boardart"
+      :viewBox="`0 0  ${numberOfCols} ${numberOfRows}`"
       preserveAspectRatio="none"
       aria-hidden="true"
     >
@@ -73,7 +106,7 @@ function handleCellClick(rowIndex, colIndex, cellType) {
         type="button"
         :style="cellPosition(rowIndex, colIndex)"
         :aria-label="`Select cell at row ${rowIndex + 1}, column ${colIndex + 1}`"
-        @click="handleCellClick(rowIndex, colIndex, cell.type)"
+        @click="playerBoard.handleCellClick(rowIndex, colIndex, cell.type)"
       >
       </button>
     </template>
