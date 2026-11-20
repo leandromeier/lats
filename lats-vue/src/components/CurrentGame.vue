@@ -1,22 +1,17 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'  
 import { useRouter } from 'vue-router'              
-import Graph from 'graphology';
-import Board from '../models/Board.js'
 import Game from '../models/Game.js'
 
 const router = useRouter()        
 
-const game = reactive(new Game(new Board()))
+const game = reactive(new Game())
 const boards = game.boards
 const playerBoard = boards[0] // default, but needs to be adapted in time
-
-const padding = boards[0].padding
-const width = boards[0].getBoardWidth()
-const height = boards[0].getBoardHeight()
 const numberOfCols = boards[0].tiles[0].length
 const numberOfRows = boards[0].tiles.length
 const celestialBodies = ref(boards[0].tiles)
+
 
 function cellPosition(row, col) {
   return {
@@ -37,6 +32,13 @@ function handleCellClick(rowIndex, colIndex, cellType) {
 
 <template>
   <h1>Current Game</h1>
+  <div class="game-info">
+    <p>Number of players: {{ game.boards.length }}</p>
+    <p>Current round: {{ game.currentRound }}</p>
+    <p>Draw the displayed figure. You may rotate, but not mirror it. Click a star to select it, 
+      and click a neighboring star to draw a line. Click a selected star to deselect it. 
+      You may skip a card, but you must draw both lines or neither.</p>
+  </div>
   <div
     class="board"
     :style="{ aspectRatio: `${numberOfCols} / ${numberOfRows}` }"
@@ -78,7 +80,8 @@ function handleCellClick(rowIndex, colIndex, cellType) {
   </div>
 
   <footer>
-    <button @click="router.push('/')">Back to Main Page</button>
+    <br>
+    <button class="navigation-button" @click="router.push('/')">Back to Main Page</button>
   </footer>
 </template>
 
@@ -100,8 +103,8 @@ function handleCellClick(rowIndex, colIndex, cellType) {
 }
 
 .celestial-body {
-  width: 1em;
-  height: 1em;
+  width: 0.8em;
+  height: 0.8em;
   position: absolute;
   transform: translate(-50%, -50%);
   padding: 0;
@@ -119,17 +122,19 @@ function handleCellClick(rowIndex, colIndex, cellType) {
   transform: translate(-50%, -50%) scale(1.5);
 }
 
-/* cross: vertical and horizontal thin lines */
 .star::before {
   content: '';
   position: absolute;
   inset: -0.3em;
-  background:
-    linear-gradient(white, white) center / 0.08em 100% no-repeat,
-    linear-gradient(white, white) center / 100% 0.08em no-repeat;
+  background: white;
+  clip-path: polygon(
+    50% 0, 56% 42%, 85% 15%, 58% 44%,
+    100% 50%, 58% 56%, 85% 85%, 56% 58%,
+    50% 100%, 44% 58%, 15% 85%, 42% 56%,
+    0 50%, 42% 44%, 15% 15%, 44% 42%
+  );
 }
 
-/* circle overlaid on the cross */
 .star::after {
   content: '';
   position: absolute;
@@ -139,9 +144,7 @@ function handleCellClick(rowIndex, colIndex, cellType) {
 }
 
 .star.selected::before {
-  background:
-    linear-gradient(yellow, yellow) center / 0.08em 100% no-repeat,
-    linear-gradient(yellow, yellow) center / 100% 0.08em no-repeat;
+  background: yellow;
 }
 
 .star.selected::after {

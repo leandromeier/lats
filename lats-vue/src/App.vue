@@ -9,13 +9,14 @@ body {
   min-height: 100vh;
   background: #05015e;
   color: white;
+  padding: 1em;
 }
 
 h1 {
   color: white;
 }
 
-button:not(.celestial-body) {
+button.navigation-button {
   font-family: 'Trebuchet MS', 'Segoe UI', Helvetica, sans-serif;
   font-size: 1.15rem;
   letter-spacing: 0.08em;
@@ -28,14 +29,16 @@ button:not(.celestial-body) {
   cursor: pointer;
   box-shadow: 0 0 12px rgba(120, 110, 255, 0.45);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
-button:not(.celestial-body):hover {
+button.navigation-button:hover {
   box-shadow: 0 0 20px rgba(160, 150, 255, 0.8);
   transform: translateY(-2px);
 }
 
-button:not(.celestial-body):active {
+button.navigation-button:active {
   transform: translateY(0);
 }
 
