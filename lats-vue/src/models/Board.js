@@ -86,8 +86,8 @@ export default class Board {
         }
     }
 
-    fromTupleToId = (r, c) => `(${r},${c})`
+    fromTupleToId = (r, c) => `(${r}:${c})`
     fromIdToTuple(id) {
-        return id.slice(1, -1).split(',').map(Number)
+        return id.slice(1, -1).split(':').map(Number)
     }
 }

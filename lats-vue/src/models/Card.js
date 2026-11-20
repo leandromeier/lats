@@ -1,18 +1,14 @@
 import Graph from 'graphology';
 import CelestialBody from './CelestialBody.js'
-export default class Board {
+export default class Card {
 
-    constructor(numberOfRows = 4, numberOfCols = 4, cardContent =
-        ["(0,0),(0,1)", "(0,1),(1,1)"]
-    ) {
+    constructor(numberOfRows = 4, numberOfCols = 4) {
         this.padding = 4
         this.tileWidth = 5
         this.tileHeight = 5
         this.numberOfRows = numberOfRows
         this.numberOfCols = numberOfCols
         this.stateGraph = new Graph()
-        this.setUpCard()
-        this.setUpGraph(cardContent)
     }
 
     // since these cards are comparatively small, I want to set them up from an array
@@ -31,7 +27,7 @@ export default class Board {
             }
         }
         cardContent.forEach((pair) => {
-            const [start, end] = pair.split(',').map(Number)
+            const [start, end] = pair.split(';')
             this.stateGraph.addEdge(start, end)
         })
         // draw two edges
@@ -39,8 +35,8 @@ export default class Board {
 
     }
 
-    fromTupleToId = (r, c) => `(${r},${c})`
+    fromTupleToId = (r, c) => `(${r}:${c})`
     fromIdToTuple(id) {
-        return id.slice(1, -1).split(',').map(Number)
+        return id.slice(1, -1).split(':').map(Number)
     }
 }
